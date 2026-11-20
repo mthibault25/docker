@@ -1,0 +1,21 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    user: "1000:1000" # Set to your Linux UID:GID (Run `id` in your terminal to check)
+    # network_mode: "host" # Recommended for simple DLNA/UPnP discovery
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - /mnt/external/Media/movies:/media/movies:ro
+      - /mnt/external/Media/shows:/media/tvshows:ro
+    ports: [8096:8096]
+    restart: "unless-stopped"
+    environment:
+      - TZ=America/Toronto
+    labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "jellyfin"
+      tsdproxy.dash.icon: "sh/jellyfin"
+      tsdproxy.funnel: true
+      tsdproxy.container.port: 8096
