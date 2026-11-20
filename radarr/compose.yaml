@@ -1,0 +1,20 @@
+---
+services:
+  radarr:
+    image: linuxserver/radarr:7.0.1-develop
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    volumes:
+      - ./data:/config
+      - /mnt/external/Media/movies:/movies #optional
+      - /opt/docker/downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "radarr"
+      tsdproxy.dash.icon: "sh/radarr"
